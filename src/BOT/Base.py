@@ -1,12 +1,11 @@
 import requests
 import json
 
-
 # url = 'https://www.worldometers.info/coronavirus/'
 
 
 class BaseClass():
-    def __init__(self, token, version):
+    def __init__(self, token, version='5.52'):
         self.url = 'https://api.vk.com/method'
         self.token = token
         self.version = version

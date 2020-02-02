@@ -1,21 +1,39 @@
 import requests
-
+from src.BOT.parser.main import parse
 from src.BOT.Base import BaseClass
 
 
 class Message(BaseClass):
-    def __init__(self, token, version):
-        super().__init__(token, version)
+    def __init__(self, token):
+        super().__init__(token)
         self.url += '/messages'
 
-    def mark_as_read(self, message_ids, peer_id, start_message_id, group_id, **kwargs):
-        url = f'{self.url}.markAsRead?message_ids={message_ids}'
+    def check_prefix(self, message):
+        # reserved_words = {
+        #     'Hi': [
+        #         'hi',
+        #         'Hi',
+        #         'Привет',
+        #         'привет',
+        #         'Здравствуй',
+        #         'здравствуй',
+        #         'Даров',
+        #         'даров',
+        #     ],
+        #     'status': 'status',
+        # }
 
-        kwargs.update(
-            peer_id=peer_id,
-            start_message_id=start_message_id,
-            group_id=group_id,
-        )
+        print(message[0])
+        if message[0] == '.':
+            split_message = message.split('.')
+            if message == '.hi':
+                return 'Привет.\nUntil are live.'
+            elif message == '.status':
+                return str(parse())
+        return False
+
+    def mark_as_read(self, **kwargs):
+        url = f'{self.url}.markAsRead'
 
         response = super().request(url, **kwargs)
         print('complete')
@@ -32,6 +50,3 @@ class Message(BaseClass):
         response = super().request(url, **kwargs)
         print(response.json())
         return response.json()
-
-
-

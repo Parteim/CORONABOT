@@ -1,24 +1,13 @@
 import requests
-
-
-def request():
-    url = 'https://api.vk.com/method/users.get?user_id=210700286&v=5.52'
-    method = None
-    version = None
-    domain = None
-    
-    response = requests.get(
-        url,
-        params={
-            'method': method,
-        }
-    )
-    
-    return 
+from src.BOT.Groups_methods import Groups
 
 
 def run():
-    pass
+    bot = Groups(
+        'f5f26c4d4e17f59026a331585c2287b1a2613a154fce512c02324f73e432119b51cf37cb7b7ec02b3658a',
+    )
+
+    print(bot.connect())
 
 
 if __name__ == '__main__':

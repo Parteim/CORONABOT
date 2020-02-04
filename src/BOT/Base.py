@@ -5,7 +5,7 @@ import json
 
 
 class BaseClass():
-    def __init__(self, token, version='5.52'):
+    def __init__(self, token, version='5.103'):
         self.url = 'https://api.vk.com/method'
         self.token = token
         self.version = version

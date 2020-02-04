@@ -22,8 +22,6 @@ class Message(BaseClass):
         #     ],
         #     'status': 'status',
         # }
-
-        print(message[0])
         if message[0] == '.':
             split_message = message.split('.')
             if message == '.hi':

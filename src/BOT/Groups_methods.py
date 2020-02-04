@@ -1,4 +1,5 @@
 import requests
+import random
 
 from src.BOT.Base import BaseClass
 from src.BOT.Messages_methods import Message
@@ -8,6 +9,31 @@ class Groups(BaseClass):
     def __init__(self, token):
         super().__init__(token)
         self.url += '/groups'
+
+    def update(self, update, message):
+
+        for i in update:
+            print(i)
+            if i['type'] == 'message_new':
+                obj = i['object']
+                message.mark_as_read(
+                    # [obj['id']],                                  # message ids
+                    peer_id=obj['message']['peer_id'],  # peer id
+                    # start_message_id=obj['id'],                   # start message id
+                    group_id=i['group_id'],  # group id
+                )
+
+                message_body = False
+
+                if obj['message']['text'] != '':
+                    message_body = message.check_prefix(obj['message']['text'])
+
+                if message_body:
+                    message.send(
+                        message_body,                       # message body
+                        peer_id=obj['message']['peer_id'],  # receiver
+                        random_id=random.random()
+                    )
 
     def get_long_poll_server(self, group_id, **kwargs):
         url = f'{self.url}.getLongPollServer?group_id={group_id}'
@@ -34,24 +60,7 @@ class Groups(BaseClass):
             print(update)
 
             if update:
-                for i in update:
-                    if i['type'] == 'message_new':
-                        obj = i['object']
-                        message.mark_as_read(
-                            # [obj['id']],                                  # message ids
-                            peer_id=obj['user_id'],                         # peer id
-                            # start_message_id=obj['id'],                   # start message id
-                            group_id=i['group_id'],                         # group id
-                        )
+                self.update(update, message)
 
-                        message_body = message.check_prefix(i['object']['body'])
-
-                        print(message_body)
-
-                        if message_body:
-                            message.send(
-                                message_body,                                       # message body
-                                peer_id=obj['user_id']                      # receiver
-                            )
             ts = receiver['ts']
 

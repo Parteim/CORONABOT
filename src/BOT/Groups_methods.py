@@ -11,29 +11,28 @@ class Groups(BaseClass):
         self.url += '/groups'
 
     def update(self, update, message):
+        print(update)
+        update = update[0]
+        if update['type'] == 'message_new':
+            obj = update['object']
+            message.mark_as_read(
+                # [obj['id']],                                  # message ids
+                peer_id=obj['message']['peer_id'],              # peer id
+                # start_message_id=obj['id'],                   # start message id
+                group_id=update['group_id'],                    # group id
+            )
 
-        for i in update:
-            print(i)
-            if i['type'] == 'message_new':
-                obj = i['object']
-                message.mark_as_read(
-                    # [obj['id']],                                  # message ids
-                    peer_id=obj['message']['peer_id'],  # peer id
-                    # start_message_id=obj['id'],                   # start message id
-                    group_id=i['group_id'],  # group id
+            message_body = False
+
+            if obj['message']['text'] != '':
+                message_body = message.check_prefix(obj['message']['text'])
+
+            if message_body:
+                message.send(
+                    message_body,  # message body
+                    peer_id=obj['message']['peer_id'],  # receiver
+                    random_id=random.random()
                 )
-
-                message_body = False
-
-                if obj['message']['text'] != '':
-                    message_body = message.check_prefix(obj['message']['text'])
-
-                if message_body:
-                    message.send(
-                        message_body,                       # message body
-                        peer_id=obj['message']['peer_id'],  # receiver
-                        random_id=random.random()
-                    )
 
     def get_long_poll_server(self, group_id, **kwargs):
         url = f'{self.url}.getLongPollServer?group_id={group_id}'
@@ -54,13 +53,9 @@ class Groups(BaseClass):
 
         while True:
             receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
-            print(receiver)
-
             update = receiver['updates']
-            print(update)
 
             if update:
                 self.update(update, message)
 
             ts = receiver['ts']
-

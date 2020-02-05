@@ -52,10 +52,13 @@ class Groups(BaseClass):
         )
 
         while True:
-            receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
-            update = receiver['updates']
+            try:
+                receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
+                update = receiver['updates']
 
-            if update:
-                self.update(update, message)
+                if update:
+                    self.update(update, message)
 
-            ts = receiver['ts']
+                ts = receiver['ts']
+            except:
+                pass

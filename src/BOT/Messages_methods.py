@@ -15,6 +15,10 @@ class Message(BaseClass):
                 return 'Привет.\nUntil are live.'
             elif message == '.status':
                 return str(parse())
+
+        if '🐀' in message:
+            return 'чумные крыски'
+
         return False
 
     def mark_as_read(self, **kwargs):

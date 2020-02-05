@@ -1,0 +1,4 @@
+date day: 5 month: 2 year: 2020 
+infected: 24,619 
+deaths: 493 
+recovered: 989 

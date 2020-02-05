@@ -11,10 +11,18 @@ class Message(BaseClass):
     def check_prefix(self, message):
         if message[0] == '.':
             split_message = message.split('.')
-            if message == '.hi':
+
+            if 'hi' in split_message:
                 return 'Привет.\nUntil are live.'
-            elif message == '.status':
-                return str(parse())
+            elif 'status' in split_message:
+                return parse()
+
+        elif 'Аниме' in message or 'аниме' in message:
+            return 'Ты че черт\nАнимеЧники дЫрявые'
+
+        elif '🐀' in message:
+            return 'крыска'
+
         return False
 
     def mark_as_read(self, **kwargs):
@@ -45,7 +53,6 @@ class Message(BaseClass):
         :param kwargs:
         :return: json obj (1 for each of deleted message)
         """
-
         url = f'{self.url}.delete'
 
         response = super().request(url, **kwargs)

@@ -1,8 +1,12 @@
 import requests
 import random
+import time
 
+from src.BOT.parser.main import parse
 from src.BOT.Base import BaseClass
 from src.BOT.Messages_methods import Message
+
+CONST_CLOCK = 7
 
 
 class Groups(BaseClass):
@@ -10,27 +14,42 @@ class Groups(BaseClass):
         super().__init__(token)
         self.url += '/groups'
 
+    def check_time(self, clock):
+        if clock.tm_hour + CONST_CLOCK == 15 and clock.tm_min == 00:
+            print(parse())
+        return False
+
     def update(self, update, message):
         print(update)
         update = update[0]
         if update['type'] == 'message_new':
+
             obj = update['object']
+            message_obj = update['object']['message']
+
             message.mark_as_read(
                 # [obj['id']],                                  # message ids
-                peer_id=obj['message']['peer_id'],              # peer id
+                peer_id=message_obj['peer_id'],                 # peer id
                 # start_message_id=obj['id'],                   # start message id
                 group_id=update['group_id'],                    # group id
             )
 
             message_body = False
+            if message_obj['text'] != '':
+                message_body = message.check_prefix(message_obj['text'])
 
-            if obj['message']['text'] != '':
-                message_body = message.check_prefix(obj['message']['text'])
+            # if message_obj['from_id'] == 233055395 and message_obj['text'] != '':
+            #     message.edit(
+            #         message='...',
+            #         message_id=message_obj['conversation_message_id'],
+            #         peer_id=message_obj['peer_id'],
+            #         group_id=update['group_id'],
+            #     )
 
             if message_body:
                 message.send(
-                    message_body,  # message body
-                    peer_id=obj['message']['peer_id'],  # receiver
+                    message_body,                               # text of message
+                    peer_id=message_obj['peer_id'],             # receiver
                     random_id=random.random()
                 )
 
@@ -54,6 +73,9 @@ class Groups(BaseClass):
         while True:
             receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
             update = receiver['updates']
+
+            clock = time.gmtime()
+            self.check_time(clock)
 
             if update:
                 self.update(update, message)

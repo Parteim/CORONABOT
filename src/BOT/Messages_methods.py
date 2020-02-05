@@ -20,8 +20,11 @@ class Message(BaseClass):
         elif 'Аниме' in message or 'аниме' in message:
             return 'Ты че черт\nАнимеЧники дЫрявые'
 
-        elif '🐀' in message:
+        elif message == '🐀':
             return 'крыска'
+
+        elif '🐀' in message:
+            return 'чумные крыски'
 
         return False
 

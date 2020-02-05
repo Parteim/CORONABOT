@@ -1,23 +1,14 @@
 import requests
 import random
-import time
 
-from src.BOT.parser.main import parse
 from src.BOT.Base import BaseClass
 from src.BOT.Messages_methods import Message
-
-CONST_CLOCK = 7
 
 
 class Groups(BaseClass):
     def __init__(self, token):
         super().__init__(token)
         self.url += '/groups'
-
-    def check_time(self, clock):
-        if clock.tm_hour + CONST_CLOCK == 15 and clock.tm_min == 00:
-            print(parse())
-        return False
 
     def update(self, update, message):
         print(update)
@@ -71,13 +62,13 @@ class Groups(BaseClass):
         )
 
         while True:
-            receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
-            update = receiver['updates']
+            try:
+                receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
+                update = receiver['updates']
 
-            clock = time.gmtime()
-            self.check_time(clock)
+                if update:
+                    self.update(update, message)
 
-            if update:
-                self.update(update, message)
-
-            ts = receiver['ts']
+                ts = receiver['ts']
+            except:
+                pass

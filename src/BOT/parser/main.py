@@ -7,7 +7,7 @@ url = 'https://www.worldometers.info/coronavirus/'
 
 def difference():
 
-    def check_str(string):
+    def str_to_int(string):
         if split_str[0] == string:
             i = split_str[0]
             try:
@@ -15,7 +15,7 @@ def difference():
                 i = i[0] + i[1]
             except:
                 pass
-            return i
+            return int(i[0])
         return False
 
     with open('data.txt', 'r') as file:
@@ -26,15 +26,15 @@ def difference():
             split_str = line.split(' ')
             print(split_str)
 
-            checker = check_str('infected:')
+            checker = str_to_int('infected:')
             if checker:
                 infected = checker
 
-            checker = check_str('deaths:')
+            checker = str_to_int('deaths:')
             if checker:
                 deaths = checker
 
-            checker = check_str('recovered:')
+            checker = str_to_int('recovered:')
             if checker:
                 recovered = checker
 
@@ -48,7 +48,7 @@ def parse():
 
     clock = date.today()
 
-    date_str = f'day: {clock.day} month: {clock.month} year: {clock.year}'
+    date_str = f'{clock.day}.{clock.month}.{clock.year}'
     print(clock)
 
     counters = soup.find_all('div', class_='maincounter-number', limit=3)
@@ -57,9 +57,9 @@ def parse():
     recovered = counters[2].find('span').text
 
     return f'date {date_str} \n' \
-           f'infected: {infected} \n' \
-           f'deaths: {deaths} \n' \
-           f'recovered: {recovered} \n'
+           f'infected --- {infected} \n' \
+           f'deaths ---{deaths} \n' \
+           f'recovered --- {recovered} \n'
 
 
 def writer():

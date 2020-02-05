@@ -20,9 +20,9 @@ class Groups(BaseClass):
 
             message.mark_as_read(
                 # [obj['id']],                                  # message ids
-                peer_id=message_obj['peer_id'],                 # peer id
+                peer_id=message_obj['peer_id'],  # peer id
                 # start_message_id=obj['id'],                   # start message id
-                group_id=update['group_id'],                    # group id
+                group_id=update['group_id'],  # group id
             )
 
             message_body = False
@@ -39,8 +39,8 @@ class Groups(BaseClass):
 
             if message_body:
                 message.send(
-                    message_body,                               # text of message
-                    peer_id=message_obj['peer_id'],             # receiver
+                    message_body,  # text of message
+                    peer_id=message_obj['peer_id'],  # receiver
                     random_id=random.random()
                 )
 
@@ -62,13 +62,10 @@ class Groups(BaseClass):
         )
 
         while True:
-            try:
-                receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
-                update = receiver['updates']
+            receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
+            update = receiver['updates']
 
-                if update:
-                    self.update(update, message)
+            if update:
+                self.update(update, message)
 
-                ts = receiver['ts']
-            except:
-                pass
+            ts = receiver['ts']

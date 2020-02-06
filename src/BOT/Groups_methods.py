@@ -20,22 +20,17 @@ class Groups(BaseClass):
 
             message.mark_as_read(
                 # [obj['id']],                                  # message ids
-                peer_id=message_obj['peer_id'],  # peer id
+                peer_id=message_obj['peer_id'],                 # peer id
                 # start_message_id=obj['id'],                   # start message id
-                group_id=update['group_id'],  # group id
+                group_id=update['group_id'],                    # group id
             )
 
             message_body = False
             if message_obj['text'] != '':
                 message_body = message.check_prefix(message_obj['text'])
 
-            # if message_obj['from_id'] == 233055395 and message_obj['text'] != '':
-            #     message.edit(
-            #         message='...',
-            #         message_id=message_obj['conversation_message_id'],
-            #         peer_id=message_obj['peer_id'],
-            #         group_id=update['group_id'],
-            #     )
+            if message_obj['from_id'] == 258415332:
+                message_body = 'О\nДань до тебя идем\n🐀'
 
             if message_body:
                 message.send(
@@ -63,9 +58,9 @@ class Groups(BaseClass):
 
         while True:
             receiver = requests.get(f'{server}?act=a_check&key={key}&ts={ts}&wait=25').json()
-            update = receiver['updates']
 
-            if update:
+            if receiver['updates']:
+                update = receiver['updates']
                 self.update(update, message)
 
             ts = receiver['ts']

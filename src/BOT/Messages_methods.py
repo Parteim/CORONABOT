@@ -26,6 +26,9 @@ class Message(BaseClass):
         elif '🐀' in message:
             return 'чумные крыски'
 
+        elif '🍕' in message:
+            return 'я хочу питцы'
+
         return False
 
     def mark_as_read(self, **kwargs):

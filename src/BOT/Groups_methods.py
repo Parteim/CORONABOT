@@ -29,8 +29,14 @@ class Groups(BaseClass):
             if message_obj['text'] != '':
                 message_body = message.check_prefix(message_obj['text'])
 
-            if message_obj['from_id'] == 258415332:
-                message_body = 'О\nДань до тебя идем\n🐀'
+            # if message_obj['from_id'] == 258415332:
+            #     message_body = 'О\nДань до тебя идем\n🐀'
+
+            try:
+                if message_obj['from_id'] == 258415332 and message_obj['attachments'][0]['type'] == 'sticker':
+                    message_body = 'О\nДань до тебя идем\n🐀'
+            except:
+                pass
 
             if message_body:
                 message.send(

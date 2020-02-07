@@ -27,7 +27,7 @@ class Message(BaseClass):
             return 'чумные крыски'
 
         elif '🍕' in message:
-            return 'я хочу питцы'
+            return 'Я ХАЧУ ПИТСЫ'
 
         return False
 
